@@ -27,11 +27,11 @@ affordanceMap = imresize(affordanceMap,size(inputDepth)); % Resize output to ful
 affordanceMap(affordanceMap >= 1) = 0.9999;
 affordanceMap(affordanceMap < 0) = 0;
 
-% Post-process affordance predictions
-affordanceMap = postprocess(affordanceMap, ...
-                            inputColor,inputDepth, ...
-                            backgroundColor,backgroundDepth, ...
-                            cameraIntrinsics);
+% Post-process affordance predictions and generate surface normals
+[affordanceMap,surfaceNormalsMap] = postprocess(affordanceMap, ...
+                                    inputColor,inputDepth, ...
+                                    backgroundColor,backgroundDepth, ...
+                                    cameraIntrinsics);
 
 % Gaussian smooth affordances
 affordanceMap = imgaussfilt(affordanceMap, 7);
@@ -42,5 +42,7 @@ affordanceMap = cmap(floor(affordanceMap(:).*size(cmap,1))+1,:);
 affordanceMap = reshape(affordanceMap,size(inputColor));
 
 % Overlay affordance heat map over color image and save to results.png
-imshow(0.5*inputColor+0.5*affordanceMap);
+figure(1); imshow(0.5*inputColor+0.5*affordanceMap);
+figure(2); imshow(surfaceNormalsMap);
 imwrite(0.5*inputColor+0.5*affordanceMap,'results.png')
+imwrite(surfaceNormalsMap,'normals.png')

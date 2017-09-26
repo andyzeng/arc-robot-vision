@@ -1,4 +1,4 @@
-# Introduction
+# Robotic Pick-and-Place of Novel Objects in Clutter
 
 This repository contains implementations for the major components of robot perception as part of MIT-Princeton's 1st Place winning entry (stow task) at the [Amazon Robotics Challenge](https://www.amazonrobotics.com/#/roboticschallenge) 2017. Featuring:
 
@@ -11,6 +11,7 @@ This repository contains implementations for the major components of robot perce
 <img src="https://github.com/andyzeng/arc-robot-vision/raw/master/images/robot.jpg" height="230px" width="307px">
 <img src="https://github.com/andyzeng/arc-robot-vision/raw/master/images/grasping.gif" height="230px" width="258px">
 <img src="https://github.com/andyzeng/arc-robot-vision/raw/master/images/recognition.jpg" height="230px" width="258px">
+<br>
 </div>
 
 For more information about our approach, please visit our [project webpage](http://apc.cs.princeton.edu/) and check out our [paper]():
@@ -53,13 +54,13 @@ Our implementations have been tested on Ubuntu 16.04.
 
 # Suction-Based Grasping
 
-**Input**: An RGB-D image of various objects in a scene
-
-**Output**: Confidence map of pixel-level affordances (where higher values indicate better locations for grasping with suction)
+A Torch implementation of fully convolutional neural networks for predicting pixel-level affordances (here higher values indicate better surface locations for grasping with suction) given an RGB-D image as input.
 
 ![suction-based-grasping](images/suction-based-grasping.jpg?raw=true)
 
 ## Quick Start
+
+To run our pre-trained model to get pixel-level affordances for grasping with suction:
 
 1. Clone this repository and navigate to `arc-robot-vision/suction-based-grasping/convnet`
 
@@ -79,46 +80,60 @@ Our implementations have been tested on Ubuntu 16.04.
 3. Run our model on an optional target RGB-D image. Input color images should be 24-bit RGB PNG, while depth images should be 16-bit PNG, where depth values are saved in deci-millimeters (10<sup>-4</sup>m).
 
     ```bash
-    th infer.lua # creates a results.h5 file
+    th infer.lua # creates results.h5
     ```
 
     or
 
     ```bash
-    imgColorPath=<image.png> imgDepthPath=<image.png> modelPath=<model.t7> th infer.lua # creates a results.h5 file
+    imgColorPath=<image.png> imgDepthPath=<image.png> modelPath=<model.t7> th infer.lua # creates results.h5
     ```
 
-4. Visualize the predictions in Matlab. Shows a heat map of confidence values where hotter regions indicate better locations for grasping with suction. Also displays computed surfaces normals, which can be used to decide between robot motion primitives suction-down or suction-side. Run the following in Matlab:
+4. Visualize the predictions in Matlab. Shows a heat map of confidence values where hotter regions indicate better locations for grasping with suction. Also displays computed surface normals, which can be used to decide between robot motion primitives suction-down or suction-side. Run the following in Matlab:
 
     ```matlab
-    visualize;
+    visualize; # creates results.png and normals.png
     ```
 
 ## Training
 
-1. Navigate to `arc-robot-vision/suction-based-grasping/convnet`
+To train your own model:
+
+1. Navigate to `arc-robot-vision/suction-based-grasping`
 
     ```bash
     cd arc-robot-vision/suction-based-grasping
     ```
 
-2. Download our suction-based grasping dataset. More information about the dataset can be found [here]().
+2. Download our suction-based grasping dataset and save the files into `arc-robot-vision/suction-based-grasping/data`. More information about the dataset can be found [here]().
 
     ```bash
-    wget 
-    unzip
+    wget http://vision.princeton.edu/projects/2017/arc/downloads/suction-based-grasping-dataset.zip
+    unzip suction-based-grasping-dataset.zip # unzip dataset
     ```
 
- Direct download link: [suction-based-grasping-dataset.zip (1.6 GB)]()
+    Direct download link: [suction-based-grasping-dataset.zip (1.6 GB)]()
 
- 3. Run training (set optional parameters through command line arguments)
+3. Download the Torch ResNet-101 model pre-trained on ImageNet:
+
+    ```bash
+    wget http://vision.princeton.edu/projects/2017/arc/downloads/resnet-101.t7
+    ```
+
+    Direct download link: [resnet-101.t7 (409.4 MB)]()
+
+4. Run training (set optional parameters through command line arguments)
 
     ```bash
     cd convnet
     th train.lua
      ```
 
+    Tip: if you run out of GPU memory (CUDA error=2), reduce batch size or modify the network architecture in `model.lua` to use the smaller [ResNet-50]() model pre-trained on ImageNet.
+
 ## Evaluation
+
+To evaluate a trained model:
 
 1. Navigate to `arc-robot-vision/suction-based-grasping/convnet`
 
@@ -126,27 +141,40 @@ Our implementations have been tested on Ubuntu 16.04.
     cd arc-robot-vision/suction-based-grasping/convnet
     ```
 
-2. 
+2. Run the model to get affordance predictions for the testing split of our grasping dataset
 
     ```bash
-    cd arc-robot-vision/suction-based-grasping/convnet
+    modelPath=<model.t7> th test.lua # creates evaluation-results.h5
     ```
 
-2. Run our model on the testing split of our dataset
+3. Run the evaluation script in Matlab to compute pixel-level precision against manual annotations from the grasping dataset, as reported in our [paper]()
 
-## Run Our Baseline Demo
+    ```matlab
+    evaluate;
+    ```
 
+## Baseline Algorithm
 
+Our baseline algorithm predicts affordances for suction-based grasping by first computing 3D surface normals of the point cloud (projected from the RGB-D image), then measuring the variance of the surface normals (higher variance = lower affordance). To run our baseline algorithm over the testing split of our grasping dataset, run the following in Matlab:
+
+```matlab
+test; # creates results.mat
+evaluate;
+```
 
 # Parallel-Jaw Grasping
+
+A Torch implementation of fully convolutional neural networks for predicting pixel-level affordances for parallel-jaw grasping. The network takes an RGB-D heightmap as input, and outputs affordances for **horizontal** grasps. Input heightmaps can be rotated at any arbitrary angle. This structure allows the use of a unified model to predict grasp affordances for any possible grasping angle.
 
 ![parallel-jaw-grasping](images/parallel-jaw-grasping.jpg?raw=true)
 
 
 
+Download our parallel-jaw grasping dataset 
 
 
 
+Training dataset, discretizes into 16 grasping angles.
 
 
 
