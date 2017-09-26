@@ -58,9 +58,9 @@ function DataLoader:getMiniBatch()
     local batchDepthPaths = {}
     local batchLabelPaths = {}
     for sampleIdx = 1,self.batchSize do
-        batchColorPaths[sampleIdx] = paths.concat(self.dataPath,'color-input',self.samplePaths[self.shuffleIdx[self.trainIdx]]..'.png')
-        batchDepthPaths[sampleIdx] = paths.concat(self.dataPath,'depth-input',self.samplePaths[self.shuffleIdx[self.trainIdx]]..'.png')
-        batchLabelPaths[sampleIdx] = paths.concat(self.dataPath,'label',self.samplePaths[self.shuffleIdx[self.trainIdx]]..'.png')
+        batchColorPaths[sampleIdx] = paths.concat(self.dataPath,'color',self.samplePaths[self.shuffleIdx[self.trainIdx]]..'.png')
+        batchDepthPaths[sampleIdx] = paths.concat(self.dataPath,'depth',self.samplePaths[self.shuffleIdx[self.trainIdx]]..'.png')
+        batchLabelPaths[sampleIdx] = paths.concat(self.dataPath,'label-aug',self.samplePaths[self.shuffleIdx[self.trainIdx]]..'.png')
 
         -- Re-shuffle data if at end of training epoch
         if self.trainIdx == self.trainEpochSize then

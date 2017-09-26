@@ -8,7 +8,6 @@ inputColorImage = 'demo/test-image.color.png';             % 24-bit RGB PNG
 inputDepthImage = 'demo/test-image.depth.png';             % 16-bit PNG depth in deci-millimeters
 cameraIntrinsicsFile = 'demo/test-camera-intrinsics.txt';  % 3x3 camera intrinsics matrix
 resultsFile = 'demo/results.h5';                           % HDF5 ConvNet output file from running infer.lua
-visualizationFile = 'results.png';                         % Path to save output visualization
 
 % Read RGB-D images and intrinsics
 backgroundColor = double(imread(backgroundColorImage))./255;

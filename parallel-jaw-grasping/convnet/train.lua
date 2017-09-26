@@ -11,20 +11,20 @@ require 'DataLoader'
 
 -- Default user options
 options = {
-  batchSize = 2,        
+  batchSize = 2,
   nClass = 3,
   shuffleData = true,
-  dataPath = '../data',
-  sampleList = '../data/train-split.txt',
+  dataPath = 'training',
+  sampleList = 'training/train-processed-split.txt',
   outputScale = 8,
   snapshotsFolder = 'snapshots',
   gpu = 1,
-  imgHeight =  480,
-  imgWidth = 640,
+  imgHeight =  320,
+  imgWidth = 320,
   learningRate = 0.001
 }
 
--- Parse user options from command line (i.e. phase=train th train.lua)
+-- Parse user options from command line (i.e. sampleList=<list.txt> th train.lua)
 for k,v in pairs(options) do options[k] = tonumber(os.getenv(k)) or os.getenv(k) or options[k] end
 
 -- Set active GPU
@@ -37,13 +37,13 @@ math.randomseed(os.time())
 local dataLoader = DataLoader(options)
 
 -- Build model and loss criterion
-local model,criterion = getModel(options)
+model,criterion = getModel(options)
 
 -- Initialize empty tensors for input and labels
 local input  = {torch.Tensor(options.batchSize, 3, options.imgHeight, options.imgWidth),torch.Tensor(options.batchSize, 3, options.imgHeight, options.imgWidth)}
-local label  = torch.Tensor(options.batchSize, options.imgHeight/options.outputScale, options.imgWidth/options.outputScale)
+local label  = torch.Tensor(options.batchSize, options.imgHeight/options.outputScale,options.imgWidth/options.outputScale)
 
--- Load models to GPU
+-- Load model to GPU
 model = model:cuda()
 input[1] = input[1]:cuda()
 input[2] = input[2]:cuda()
@@ -94,7 +94,7 @@ for trainIter = 1,1000000 do -- set maximum number of iterations to an arbitrari
 
   -- Save training snapshot of model
   if trainIter%1000 == 1 then
-    local filename = paths.concat(options.snapshotsFolder,"snapshot-"..trainIter..".t7")
+    local filename = paths.concat(options.snapshotsFolder, "snapshot-"..trainIter..".t7")
     os.execute('mkdir -p '..sys.dirname(filename))
     torch.save(filename, model:clearState()) 
   end
