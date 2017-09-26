@@ -8,9 +8,9 @@ This repository contains implementations for the major components of robot perce
 * [Multi-Cam Realsense RGB-D Capture]() - A C++ implementation for streaming and capturing data (RGB-D frames) in real-time using [librealsense](https://github.com/IntelRealSense/librealsense), optimized to avoid IR depth interference for multi-cam setups. Tested on Ubuntu 16.04 connected to 16 Intel® RealSense™ SR300 Cameras.
 
 <div align="center">
-<img src="https://raw.githubusercontent.com/andyzeng/arc-robot-vision/master/images/robot.jpg" height="250px">
-<img src="https://raw.githubusercontent.com/andyzeng/arc-robot-vision/master/images/grasping.gif" height="250px">
-<img src="https://raw.githubusercontent.com/andyzeng/arc-robot-vision/master/images/recognition.jpg" height="250px">
+<img src="https://github.com/andyzeng/arc-robot-vision/raw/master/images/robot.jpg" height="250px" width="280px">
+<img src="https://github.com/andyzeng/arc-robot-vision/raw/master/images/grasping.gif" height="250px" width="280px">
+<img src="https://github.com/andyzeng/arc-robot-vision/raw/master/images/recognition.jpg" height="250px" width="280px">
 </div>
 
 ![robot](images/robot.jpg?raw=true)![grasping](images/grasping.gif?raw=true)![recognition](images/recognition.jpg?raw=true)
@@ -57,7 +57,7 @@ Our implementations have been tested on Ubuntu 16.04.
 
 **Input**: An RGB-D image of various objects in a scene
 
-**Output**: Confidence map of pixel-level affordances (where values closer to one indicates better locations for grasping with suction)
+**Output**: Confidence map of pixel-level affordances (where higher values indicate better locations for grasping with suction)
 
 
 
@@ -137,7 +137,7 @@ Our implementations have been tested on Ubuntu 16.04.
 
 
 
-# Predict Affordances for Parallel-Jaw Grasping
+# Parallel-Jaw Grasping
 
 
 
