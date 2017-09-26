@@ -8,12 +8,10 @@ This repository contains implementations for the major components of robot perce
 * [Multi-Cam Realsense RGB-D Capture]() - A C++ implementation for streaming and capturing data (RGB-D frames) in real-time using [librealsense](https://github.com/IntelRealSense/librealsense), optimized to avoid IR depth interference for multi-cam setups. Tested on Ubuntu 16.04 connected to 16 Intel® RealSense™ SR300 Cameras.
 
 <div align="center">
-<img src="https://github.com/andyzeng/arc-robot-vision/raw/master/images/robot.jpg" height="250px" width="280px">
-<img src="https://github.com/andyzeng/arc-robot-vision/raw/master/images/grasping.gif" height="250px" width="280px">
-<img src="https://github.com/andyzeng/arc-robot-vision/raw/master/images/recognition.jpg" height="250px" width="280px">
+<img src="https://github.com/andyzeng/arc-robot-vision/raw/master/images/robot.jpg" height="230px" width="307px">
+<img src="https://github.com/andyzeng/arc-robot-vision/raw/master/images/grasping.gif" height="230px" width="258px">
+<img src="https://github.com/andyzeng/arc-robot-vision/raw/master/images/recognition.jpg" height="230px" width="258px">
 </div>
-
-![robot](images/robot.jpg?raw=true)![grasping](images/grasping.gif?raw=true)![recognition](images/recognition.jpg?raw=true)
 
 For more information about our approach, please visit our [project webpage](http://apc.cs.princeton.edu/) and check out our [paper]():
 
@@ -59,7 +57,7 @@ Our implementations have been tested on Ubuntu 16.04.
 
 **Output**: Confidence map of pixel-level affordances (where higher values indicate better locations for grasping with suction)
 
-
+![suction-based-grasping](images/suction-based-grasping.jpg?raw=true)
 
 ## Quick Start
 
@@ -90,8 +88,11 @@ Our implementations have been tested on Ubuntu 16.04.
     imgColorPath=<image.png> imgDepthPath=<image.png> modelPath=<model.t7> th infer.lua # creates a results.h5 file
     ```
 
-4. Visualize the predictions in Matlab. Shows a heat map of confidence values where hotter regions indicate better locations for grasping with suction. Run the following in Matlab:
+4. Visualize the predictions in Matlab. Shows a heat map of confidence values where hotter regions indicate better locations for grasping with suction. Also displays computed surfaces normals, which can be used to decide between robot motion primitives suction-down or suction-side. Run the following in Matlab:
 
+    ```matlab
+    visualize;
+    ```
 
 ## Training
 
@@ -139,6 +140,7 @@ Our implementations have been tested on Ubuntu 16.04.
 
 # Parallel-Jaw Grasping
 
+![parallel-jaw-grasping](images/parallel-jaw-grasping.jpg?raw=true)
 
 
 
