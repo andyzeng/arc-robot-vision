@@ -29,16 +29,16 @@ for sampleIdx = 1:length(testSplit)
     for rotIdx = 1:16
         samplePrediction = sampleResult(:,:,:,rotIdx);
         
-        % Load ground truth manual annotations for suction affordances
+        % Load ground truth manual annotations for affordances
         % 0 - negative, 128 - positive, 255 - neutral (no loss)
         sampleLabel = imread(fullfile(labelPath,sprintf('%s-%02d.png',sampleName,rotIdx-1)));
         if sum(sampleLabel(:) < 255) == 0
             continue;
         end
         
-        % Suction affordance threshold
+        % Affordance threshold
 	    % threshold = 0.5; % Confidence threshold based
-        % threshold = prctile(samplePrediction(:),99); % Top 1%
+        % threshold = prctile(samplePrediction(:),90); % Top 1%
         threshold = max(samplePrediction(:)) - 0.0001; % Top 1 prediction
 
         % Compute errors

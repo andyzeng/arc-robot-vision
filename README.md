@@ -3,16 +3,15 @@
 This repository contains implementations for the major components of robot perception as part of MIT-Princeton's 1st Place winning entry (stow task) at the [Amazon Robotics Challenge](https://www.amazonrobotics.com/#/roboticschallenge) 2017. Featuring:
 
 * [Suction-Based Grasping](#suction-based-grasping) - a Torch implementation of fully convolutional neural networks (FCNs) for directly predicting suction-based grasping affordances from RGB-D images.
-    * [Baseline Algorithm](#baseline-algorithm) - a Matlab implementation of a baseline algorithm that predicts suction-based grasping affordances by computing the variance of surface normals of a 3D point cloud (projected from RGB-D images). Lower variance = higher affordance.
+    * [Baseline Algorithm](#baseline-algorithm) - a Matlab implementation of a baseline algorithm that predicts suction-based grasping affordances by computing the variance of surface normals of a 3D point cloud (projected from RGB-D images), where lower variance = higher affordance.
 * [Parallel-Jaw Grasping](#parallel-jaw-grasping) - a Torch implementation of fully convolutional neural networks (FCNs) for directly predicting parallel-jaw grasping affordances from heightmaps (created from RGB-D images).
-    * [Baseline Algorithm](#baseline-algorithm-1) - a Matlab implementation of a baseline algorithm for detecting anti-podal parallel-jaw grasps by detecting "hill-like" geometric stuctures within a 3D point cloud (projected from RGB-D images).
+    * [Baseline Algorithm](#baseline-algorithm-1) - a Matlab implementation of a baseline algorithm for detecting anti-podal parallel-jaw grasps by detecting "hill-like" geometric stuctures over a 3D point cloud (projected from RGB-D images).
 * [Image Matching](#image-matching) - a Torch implementation of two-stream convolutional neural networks for matching observed images of grasped objects to their product images for recognition.
 
 <div align="center">
 <img src="https://github.com/andyzeng/arc-robot-vision/raw/master/images/robot.jpg" height="230px" width="307px">
 <img src="https://github.com/andyzeng/arc-robot-vision/raw/master/images/grasping.gif" height="230px" width="258px">
 <img src="https://github.com/andyzeng/arc-robot-vision/raw/master/images/recognition.jpg" height="230px" width="258px">
-<br>
 </div>
 
 For more information about our approach, please visit our [project webpage](http://arc.cs.princeton.edu/) and check out our [paper]():
@@ -70,7 +69,7 @@ To run our pre-trained model to get pixel-level affordances for grasping with su
     cd arc-robot-vision/suction-based-grasping/convnet
     ```
 
-2. Download our pre-trained model for suction-based grasping
+2. Download our pre-trained model for suction-based grasping:
 
     ```bash
     wget http://vision.princeton.edu/projects/2017/arc/downloads/suction-based-grasping-snapshot-10001.t7
@@ -123,7 +122,7 @@ To train your own model:
 
     Direct download link: [resnet-101.t7 (409.4 MB)](http://vision.princeton.edu/projects/2017/arc/downloads/resnet-101.t7)
 
-4. Run training (set optional parameters through command line arguments)
+4. Run training (set optional parameters through command line arguments):
 
     ```bash
     cd convnet
@@ -142,7 +141,7 @@ To evaluate a trained model:
     cd arc-robot-vision/suction-based-grasping/convnet
     ```
 
-2. Run our pre-trained model to get affordance predictions for the testing split of our grasping dataset
+2. Run our pre-trained model to get affordance predictions for the testing split of our grasping dataset:
 
     ```bash
     th test.lua # creates evaluation-results.h5
@@ -154,7 +153,7 @@ To evaluate a trained model:
     modelPath=<model.t7> th test.lua # creates evaluation-results.h5
     ```
 
-3. Run the evaluation script in Matlab to compute pixel-level precision against manual annotations from the grasping dataset, as reported in our [paper]()
+3. Run the evaluation script in Matlab to compute pixel-level precision against manual annotations from the grasping dataset, as reported in our [paper]():
 
     ```matlab
     evaluate;
@@ -188,7 +187,7 @@ To run our pre-trained model to get pixel-level affordances for parallel-jaw gra
     cd arc-robot-vision/parallel-jaw-grasping/convnet
     ```
 
-2. Download our pre-trained model for parallel-jaw grasping
+2. Download our pre-trained model for parallel-jaw grasping:
 
     ```bash
     wget http://vision.princeton.edu/projects/2017/arc/downloads/parallel-jaw-grasping-snapshot-20001.t7
@@ -264,7 +263,7 @@ To train your own model:
 
     Direct download link: [resnet-101.t7 (409.4 MB)](http://vision.princeton.edu/projects/2017/arc/downloads/resnet-101.t7)
 
-5. Run training (set optional parameters through command line arguments)
+5. Run training (set optional parameters through command line arguments):
 
     ```bash
     th train.lua
@@ -282,13 +281,13 @@ To evaluate a trained model:
     cd arc-robot-vision/parallel-jaw-grasping/convnet
     ```
 
-2. Run the model to get affordance predictions for the testing split of our grasping dataset
+2. Run the model to get affordance predictions for the testing split of our grasping dataset:
 
     ```bash
     modelPath=<model.t7> th test.lua # creates evaluation-results.h5
     ```
 
-3. Run the evaluation script in Matlab to compute pixel-level precision against manual annotations from the grasping dataset, as reported in our [paper]()
+3. Run the evaluation script in Matlab to compute pixel-level precision against manual annotations from the grasping dataset, as reported in our [paper]():
 
     ```matlab
     evaluate;
@@ -350,19 +349,19 @@ To evaluate a trained model:
     cd arc-robot-vision/image-matching
     ```
 
-2. Run the model to compute features for the testing split of our image matching dataset
+2. Run the model to compute features for the testing split of our image matching dataset:
 
     ```bash
     th test.lua # creates HDF5 output file and saves into snapshots folder
     ```
 
-3. Run the evaluation script in Matlab to compute 1 vs 20 object recognition accuracies over our image matching dataset, as reported in our [paper]()
+3. Run the evaluation script in Matlab to compute 1 vs 20 object recognition accuracies over our image matching dataset, as reported in our [paper]():
 
     ```matlab
     evaluateTwoStage;
     ```
 
-    or run the following in Matlab for evaluation on a single model (instead of a two stage system)
+    or run the following in Matlab for evaluation on a single model (instead of a two stage system):
 
     ```matlab
     evaluateModel;
