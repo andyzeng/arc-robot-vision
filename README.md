@@ -2,10 +2,11 @@
 
 This repository contains implementations for the major components of robot perception as part of MIT-Princeton's 1st Place winning entry (stow task) at the [Amazon Robotics Challenge](https://www.amazonrobotics.com/#/roboticschallenge) 2017. Featuring:
 
-* [Multi-Affordance Grasping]() - a Torch implementation of fully convolutional neural networks for predicting multiple affordances from RGB-D images to detect suction-based grasps and parallel-jaw grasps for robotic picking.
-* [Cross-Domain Image Matching]() - a Torch implementation of two-stream convolutional neural networks for matching observed images of grasped objects to their product images for recognition.
-* [Baseline Algorithms]() - Matlab implementations of baselines for detecting grasps directly from 3D point cloud data.
-* [Multi-Cam Realsense RGB-D Capture]() - A C++ implementation for streaming and capturing data (RGB-D frames) in real-time using [librealsense](https://github.com/IntelRealSense/librealsense), optimized to avoid IR depth interference for multi-cam setups. Tested on Ubuntu 16.04 connected to 16 Intel® RealSense™ SR300 Cameras.
+* [Suction-Based Grasping](#suction-based-grasping) - a Torch implementation of fully convolutional neural networks (FCNs) for directly predicting suction-based grasping affordances from RGB-D images.
+    * [Baseline Algorithm](#baseline-algorithm) - a Matlab implementation of a baseline algorithm that predicts suction-based grasping affordances by computing the variance of surface normals of a 3D point cloud (projected from RGB-D images). Lower variance = higher affordance.
+* [Parallel-Jaw Grasping](#parallel-jaw-grasping) - a Torch implementation of fully convolutional neural networks (FCNs) for directly predicting parallel-jaw grasping affordances from heightmaps (created from RGB-D images).
+    * [Baseline Algorithm](#baseline-algorithm-1) - a Matlab implementation of a baseline algorithm for detecting anti-podal parallel-jaw grasps by detecting "hill-like" geometric stuctures within a 3D point cloud (projected from RGB-D images).
+* [Image Matching](#image-matching) - a Torch implementation of two-stream convolutional neural networks for matching observed images of grasped objects to their product images for recognition.
 
 <div align="center">
 <img src="https://github.com/andyzeng/arc-robot-vision/raw/master/images/robot.jpg" height="230px" width="307px">
@@ -14,9 +15,9 @@ This repository contains implementations for the major components of robot perce
 <br>
 </div>
 
-For more information about our approach, please visit our [project webpage](http://apc.cs.princeton.edu/) and check out our [paper]():
+For more information about our approach, please visit our [project webpage](http://arc.cs.princeton.edu/) and check out our [paper]():
 
-### Robotic Pick-and-Place of Novel Objects in Clutter with Multi-Affordance Grasping and Cross-Domain Image Matching ([pdf]() | [arxiv]() | [webpage]())
+### Robotic Pick-and-Place of Novel Objects in Clutter with Multi-Affordance Grasping and Cross-Domain Image Matching ( [pdf]() | [arxiv]() | [webpage](http://vision.princeton.edu/projects/2017/arc/) )
 
 *[Andy Zeng](http://andyzeng.com), [Shuran Song](http://vision.princeton.edu/people/shurans/), [Kuan-Ting Yu](http://people.csail.mit.edu/peterkty/), [Elliott Donlon](https://www.linkedin.com/in/elliott-donlon-238601a3), [Francois R. Hogan](https://www.linkedin.com/in/francois-hogan-2b4025b6/), [Maria Bauza](http://web.mit.edu/bauza/www/), Daolin Ma, Orion Taylor, [Melody Liu](https://melodygl.wordpress.com/), Eudald Romo, [Nima Fazeli](http://nfazeli.mit.edu/), [Ferran Alet](http://web.mit.edu/alet/www/), [Nikhil Chavan Dafle](https://nikhilcd.mit.edu/), [Rachel Holladay](http://people.csail.mit.edu/rholladay/), Isabella Morona, [Prem Qu Nair](http://premqunair.com/), Druck Green, Ian Taylor, Weber Liu, [Thomas Funkhouser](http://www.cs.princeton.edu/~funk/), [Alberto Rodriguez](http://meche.mit.edu/people/faculty/ALBERTOR@MIT.EDU)*
 
@@ -36,10 +37,10 @@ If you find this code useful in your work, please consider citing:
 ```
 
 #### License
-This code is released under the Apache License v2.0 (refer to the LICENSE file for details).
+This code is released under the Apache License v2.0 (refer to the [LICENSE](LICENSE) file for details).
 
 #### Datasets
-Information and download links for our grasping dataset and image matching dataset can be found on our [project webpage](http://arc.cs.princeton.edu/).
+Information and download links for our grasping dataset and image matching dataset can be found on our [project webpage](http://vision.princeton.edu/projects/2017/arc/#datasets).
 
 #### Contact
 If you have any questions or find any bugs, please let me know: [Andy Zeng](http://www.cs.princeton.edu/~andyz/) andyz[at]princeton[dot]edu
@@ -47,18 +48,10 @@ If you have any questions or find any bugs, please let me know: [Andy Zeng](http
 # Requirements and Dependencies
 
 * NVIDIA GPU with compute capability 3.5+
-* Torch with packages: image, optim, inn, cutorch, cunn, cudnn, hdf5
-* Matlab 2015b or later
+* [Torch](http://torch.ch/) with packages: [image](https://github.com/torch/image), [optim](https://github.com/torch/optim), [inn](https://github.com/szagoruyko/imagine-nn), [cutorch](https://github.com/torch/cutorch), [cunn](https://github.com/torch/cunn), [cudnn](https://github.com/soumith/cudnn.torch), [hdf5](https://github.com/deepmind/torch-hdf5)
+* [Matlab](https://www.mathworks.com/products/matlab.html) 2015b or later
 
-Our implementations have been tested on Ubuntu 16.04.
-
-# Table of Contents
-
-* A Quick Start: Matlab Demo
-* Suction-Based Grasping
-* Parallel-Jaw Grasping
-* Cross-Domain Image Matching
-* Multi-Cam RealSense RGB-D Capture
+Our implementations have been tested on Ubuntu 16.04 with an NVIDIA Titan X. Our full pick-and-place system implementation (outside the scope of this repository) uses a lightweight C++ ROS service as a wrapper to control Torch/Lua and Matlab processes via TCP sockets. Data is shared between the processes by reading and writing from RAMDisk.
 
 # Suction-Based Grasping
 
@@ -113,14 +106,14 @@ To train your own model:
     cd arc-robot-vision/suction-based-grasping
     ```
 
-2. Download our suction-based grasping dataset and save the files into `arc-robot-vision/suction-based-grasping/data`. More information about the dataset can be found [here]().
+2. Download our suction-based grasping dataset and save the files into `arc-robot-vision/suction-based-grasping/data`. More information about the dataset can be found [here](http://vision.princeton.edu/projects/2017/arc/#datasets).
 
     ```bash
     wget http://vision.princeton.edu/projects/2017/arc/downloads/suction-based-grasping-dataset.zip
     unzip suction-based-grasping-dataset.zip # unzip dataset
     ```
 
-    Direct download link: [suction-based-grasping-dataset.zip (1.6 GB)]()
+    Direct download link: [suction-based-grasping-dataset.zip (1.6 GB)](http://vision.princeton.edu/projects/2017/arc/downloads/suction-based-grasping-dataset.zip)
 
 3. Download the Torch ResNet-101 model pre-trained on ImageNet:
 
@@ -128,7 +121,7 @@ To train your own model:
     wget http://vision.princeton.edu/projects/2017/arc/downloads/resnet-101.t7
     ```
 
-    Direct download link: [resnet-101.t7 (409.4 MB)]()
+    Direct download link: [resnet-101.t7 (409.4 MB)](http://vision.princeton.edu/projects/2017/arc/downloads/resnet-101.t7)
 
 4. Run training (set optional parameters through command line arguments)
 
@@ -137,7 +130,7 @@ To train your own model:
     th train.lua
      ```
 
-    Tip: if you run out of GPU memory (CUDA error=2), reduce batch size or modify the network architecture in `model.lua` to use the smaller [ResNet-50]() model pre-trained on ImageNet.
+    Tip: if you run out of GPU memory (CUDA error=2), reduce batch size or modify the network architecture in `model.lua` to use the smaller [ResNet-50 (256.7 MB)](http://vision.princeton.edu/projects/2017/arc/downloads/resnet-50.t7) model pre-trained on ImageNet.
 
 ## Evaluation
 
@@ -149,7 +142,13 @@ To evaluate a trained model:
     cd arc-robot-vision/suction-based-grasping/convnet
     ```
 
-2. Run the model to get affordance predictions for the testing split of our grasping dataset
+2. Run our pre-trained model to get affordance predictions for the testing split of our grasping dataset
+
+    ```bash
+    th test.lua # creates evaluation-results.h5
+    ```
+
+    or run your own model:
 
     ```bash
     modelPath=<model.t7> th test.lua # creates evaluation-results.h5
@@ -176,7 +175,7 @@ A Torch implementation of fully convolutional neural networks for predicting pix
 
 ![parallel-jaw-grasping](images/parallel-jaw-grasping.jpg?raw=true)
 
-**Heightmaps** are generated by orthographically re-projecting 3D point clouds (from RGB-D images) upwards along the gravity direction where the height value of bin bottom = 0 (see [getHeightMaps.m]()).
+**Heightmaps** are generated by orthographically re-projecting 3D point clouds (from RGB-D images) upwards along the gravity direction where the height value of bin bottom = 0 (see [getHeightMap.m](parallel-jaw-grasping/convnet/getHeightMap.m)).
 
 ## Quick Start
 
@@ -197,7 +196,13 @@ To run our pre-trained model to get pixel-level affordances for parallel-jaw gra
 
     Direct download link: [parallel-jaw-grasping-snapshot-20001.t7 (450.1 MB)](http://vision.princeton.edu/projects/2017/arc/downloads/parallel-jaw-grasping-snapshot-20001.t7)
 
-3. Run our model on an optional target RGB-D heightmap. Input color images should be 24-bit RGB PNG, while height images (depth) should be 16-bit PNG, where height values are saved in deci-millimeters (10<sup>-4</sup>m) and bin bottom = 0.
+3. To generate a RGB-D heightmap given two RGB-D images, run the following in Matlab:
+
+    ```matlab
+    getHeightmap:
+    ```
+
+4. Run our model on an optional target RGB-D heightmap. Input color images should be 24-bit RGB PNG, while height images (depth) should be 16-bit PNG, where height values are saved in deci-millimeters (10<sup>-4</sup>m) and bin bottom = 0.
 
     ```bash
     th infer.lua # creates results.h5
@@ -209,7 +214,7 @@ To run our pre-trained model to get pixel-level affordances for parallel-jaw gra
     imgColorPath=<image.png> imgDepthPath=<image.png> modelPath=<model.t7> th infer.lua # creates results.h5
     ```
 
-4. Visualize the predictions in Matlab. Shows a heat map of confidence values where hotter regions indicate better locations for horizontal parallel-jaw grasping. Run the following in Matlab:
+5. Visualize the predictions in Matlab. Shows a heat map of confidence values where hotter regions indicate better locations for horizontal parallel-jaw grasping. Run the following in Matlab:
 
     ```matlab
     visualize; # creates results.png
@@ -225,14 +230,14 @@ To train your own model:
     cd arc-robot-vision/parallel-jaw-grasping
     ```
 
-2. Download our parallel-jaw grasping dataset and save the files into `arc-robot-vision/parallel-jaw-grasping/data`. More information about the dataset can be found [here]().
+2. Download our parallel-jaw grasping dataset and save the files into `arc-robot-vision/parallel-jaw-grasping/data`. More information about the dataset can be found [here](http://vision.princeton.edu/projects/2017/arc/#datasets).
 
     ```bash
     wget http://vision.princeton.edu/projects/2017/arc/downloads/parallel-jaw-grasping-dataset.zip
     unzip parallel-jaw-grasping-dataset.zip # unzip dataset
     ```
 
-    Direct download link: [parallel-jaw-grasping-dataset.zip ( GB)]()
+    Direct download link: [parallel-jaw-grasping-dataset.zip (711.8 MB)](http://vision.princeton.edu/projects/2017/arc/downloads/parallel-jaw-grasping-dataset.zip)
 
 3. Pre-process input data and labels for parallel-jaw grasping dataset and save the files into `arc-robot-vision/parallel-jaw-grasping/convnet/training`. Pre-processing includes rotating heightmaps into 16 discrete rotations, converting raw grasp labels (two-point lines) into dense pixel-wise labels, and augmenting labels with small amounts of jittering. Either run the following in Matlab:
 
@@ -245,11 +250,11 @@ To train your own model:
 
     ```bash
     cd convnet
-    wget http://vision.princeton.edu/projects/2017/arc/downloads/parallel-jaw-grasping-training-dataset.zip
-    unzip parallel-jaw-grasping-training-dataset.zip # unzip dataset
+    wget http://vision.princeton.edu/projects/2017/arc/downloads/training-parallel-jaw-grasping-dataset.zip
+    unzip training-parallel-jaw-grasping-dataset.zip # unzip dataset
     ```
 
-    Direct download link: [parallel-jaw-grasping-training-dataset.zip ( GB)]()
+    Direct download link: [training-parallel-jaw-grasping-dataset.zip (740.0 MB)](http://vision.princeton.edu/projects/2017/arc/downloads/training-parallel-jaw-grasping-dataset.zip)
 
 4. Download the Torch ResNet-101 model pre-trained on ImageNet:
 
@@ -257,7 +262,7 @@ To train your own model:
     wget http://vision.princeton.edu/projects/2017/arc/downloads/resnet-101.t7
     ```
 
-    Direct download link: [resnet-101.t7 (409.4 MB)]()
+    Direct download link: [resnet-101.t7 (409.4 MB)](http://vision.princeton.edu/projects/2017/arc/downloads/resnet-101.t7)
 
 5. Run training (set optional parameters through command line arguments)
 
@@ -265,7 +270,7 @@ To train your own model:
     th train.lua
      ```
 
-    Tip: if you run out of GPU memory (CUDA error=2), reduce batch size or modify the network architecture in `model.lua` to use the smaller [ResNet-50]() model pre-trained on ImageNet.
+    Tip: if you run out of GPU memory (CUDA error=2), reduce batch size or modify the network architecture in `model.lua` to use the smaller [ResNet-50](http://vision.princeton.edu/projects/2017/arc/downloads/resnet-50.t7) model pre-trained on ImageNet.
 
 ## Evaluation
 
@@ -300,6 +305,8 @@ evaluate;
 
 # Image Matching
 
+![image-matching](images/image-matching.jpg?raw=true)
+
 ## Training
 
 To train a model:
@@ -310,14 +317,14 @@ To train a model:
     cd arc-robot-vision/image-matching
     ```
 
-2. Download our image matching dataset and save the files into `arc-robot-vision/image-matching/data`. More information about the dataset can be found [here]().
+2. Download our image matching dataset and save the files into `arc-robot-vision/image-matching/data`. More information about the dataset can be found [here](http://vision.princeton.edu/projects/2017/arc/#datasets).
 
     ```bash
     wget http://vision.princeton.edu/projects/2017/arc/downloads/image-matching-dataset.zip
     unzip image-matching-dataset.zip # unzip dataset
     ```
 
-    Direct download link: [image-matching-dataset.zip ( GB)]()
+    Direct download link: [image-matching-dataset.zip (4.6 GB)](http://vision.princeton.edu/projects/2017/arc/downloads/image-matching-dataset.zip)
 
 4. Download the Torch ResNet-50 model pre-trained on ImageNet:
 
@@ -325,7 +332,7 @@ To train a model:
     wget http://vision.princeton.edu/projects/2017/arc/downloads/resnet-50.t7
     ```
 
-    Direct download link: [resnet-50.t7 (256.7 MB)]()
+    Direct download link: [resnet-50.t7 (256.7 MB)](http://vision.princeton.edu/projects/2017/arc/downloads/resnet-50.t7)
 
 5. Run training (change variable `trainMode` in `train.lua` depending on which architecture you want to train):
 
@@ -355,7 +362,7 @@ To evaluate a trained model:
     evaluateTwoStage;
     ```
 
-    or run the following for evaluation on a single model (instead of a two stage system)
+    or run the following in Matlab for evaluation on a single model (instead of a two stage system)
 
     ```matlab
     evaluateModel;
