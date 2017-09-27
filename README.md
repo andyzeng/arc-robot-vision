@@ -281,6 +281,14 @@ To evaluate a trained model:
     evaluate;
     ```
 
+## Baseline Algorithm
+
+Our baseline algorithm detects anti-podal parallel-jaw grasps by detecting "hill-like" geometric features (through brute-force sliding window search) from the 3D point cloud of an input heightmap (no color). These geometric features should satisfy two constraints: (1) gripper fingers fit within the concavities along the sides of the hill, and (2) top of the hill should be at least 2cm above the lowest points of the concavities. A valid grasp is ranked by an affordance score, which is computed by the percentage of 3D surface points between the gripper fingers that are above the lowest points of the concavities. To run our baseline algorithm over the testing split of our grasping dataset, run the following in Matlab:
+
+```matlab
+test; # creates results.mat
+evaluate;
+```
 
 
 

@@ -1,8 +1,8 @@
 % Script for evaluating suction-based grasping affordance predictions with
 % baseline algorithm against manually annotated dataset (% precision)
 
-% Path to suction prediction dataset
-dataPath = '../data';
+% User options (change me)
+dataPath = '../data'; % Path to suction-based grasping dataset
 
 % Parse test split from dataset
 testSplit = textread(fullfile(dataPath,'test-split.txt'),'%s','delimiter','\n');

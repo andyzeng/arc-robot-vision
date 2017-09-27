@@ -2,7 +2,7 @@
 % suction-based affordances over the testing split of the grasping dataset
 
 % User options (change me)
-dataPath = '../data'; % Path to dataset
+dataPath = '../data'; % Path to suction-based grasping dataset
 
 % Parse test split from dataset
 testSplit = textread(fullfile(dataPath,'test-split.txt'),'%s','delimiter','\n');
