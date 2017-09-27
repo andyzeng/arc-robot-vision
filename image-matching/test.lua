@@ -17,8 +17,6 @@ options = {
 -- Parse user options from command line (i.e. snapshotsFolder=<snapshots> th test.lua)
 for k,v in pairs(options) do options[k] = tonumber(os.getenv(k)) or os.getenv(k) or options[k] end
 
-print(options.snapshotsFolder)
-
 cutorch.setDevice(options.gpu)
 local trainMode = options.trainMode
 local doCrop = false
