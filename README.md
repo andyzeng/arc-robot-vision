@@ -320,8 +320,7 @@ Our baseline algorithm detects anti-podal parallel-jaw grasps by detecting "hill
 
 # Image Matching
 
-We train a two-stream convolutional neural network where one stream computes 2048-dimensional feature vectors for product images while the other stream computes 2048-dimensional feature vectors for observed images, and optimize both streams so that features are more similar for images of the same object and dissimilar otherwise. %Each training sample consists of a observation image of an object (i.e. duct tape), the closest matching product image of the same object, and a observation image of a different object. The triplet loss effectively pushes together product image and observation images features of the same object, while pulling apart those of different objects. 
-During testing, product images of both known and novel objects are mapped onto a common feature space. We recognize observed images by mapping them to the same feature space and finding the nearest neighbor match.
+A Torch implementation of two-stream convolutional neural networks for matching observed images of grasped objects to their product images for recognition. One stream computes 2048-dimensional feature vectors for product images while the other stream computes 2048-dimensional feature vectors for observed images. During training, both streams are optimized so that features are more similar for images of the same object and dissimilar otherwise. During testing, product images of both known and novel objects are mapped onto a common feature space. We recognize observed images by mapping them to the same feature space and finding the nearest neighbor product image match.
 
 ![image-matching](images/image-matching.jpg?raw=true)
 
@@ -379,10 +378,11 @@ To evaluate a trained model:
 
     Direct download links: [k-net.zip  (175.3 MB)](http://vision.princeton.edu/projects/2017/arc/downloads/k-net.zip) and [n-net.zip (174.0 MB)](http://vision.princeton.edu/projects/2017/arc/downloads/n-net.zip)
 
-3. Run a model to compute features for the testing split of our image matching dataset:
+3. Run our pre-trained models to compute features for the testing split of our image matching dataset (change variable `trainMode` depending on which architecture you want to test):
 
     ```bash
-    th test.lua # creates HDF5 output file and saves into snapshots folder
+    trainMode=1 snapshotsFolder=snapshots-with-class snapshotName=snapshot-170000 th test.lua # for k-net: creates HDF5 output file and saves into snapshots folder
+    trainMode=2 snapshotsFolder=snapshots-no-class snapshotName=snapshot-8000 th test.lua # for n-net: creates HDF5 output file and saves into snapshots folder
     ```
 
 4. Run the evaluation script in Matlab to compute 1 vs 20 object recognition accuracies over our image matching dataset, as reported in our [paper]():
