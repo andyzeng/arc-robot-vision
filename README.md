@@ -16,7 +16,7 @@ This repository contains implementations for the major components of robot perce
 
 For more information about our approach, please visit our [project webpage](http://arc.cs.princeton.edu/) and check out our [paper]():
 
-### Robotic Pick-and-Place of Novel Objects in Clutter with Multi-Affordance Grasping and Cross-Domain Image Matching ( [pdf]() | [arxiv]() | [webpage](http://vision.princeton.edu/projects/2017/arc/) )
+### Robotic Pick-and-Place of Novel Objects in Clutter with Multi-Affordance Grasping and Cross-Domain Image Matching ( [pdf]() | [arxiv]() | [webpage](http://arc.cs.princeton.edu/) )
 
 *[Andy Zeng](http://andyzeng.com), [Shuran Song](http://vision.princeton.edu/people/shurans/), [Kuan-Ting Yu](http://people.csail.mit.edu/peterkty/), [Elliott Donlon](https://www.linkedin.com/in/elliott-donlon-238601a3), [Francois R. Hogan](https://www.linkedin.com/in/francois-hogan-2b4025b6/), [Maria Bauza](http://web.mit.edu/bauza/www/), Daolin Ma, Orion Taylor, [Melody Liu](https://melodygl.wordpress.com/), Eudald Romo, [Nima Fazeli](http://nfazeli.mit.edu/), [Ferran Alet](http://web.mit.edu/alet/www/), [Nikhil Chavan Dafle](https://nikhilcd.mit.edu/), [Rachel Holladay](http://people.csail.mit.edu/rholladay/), Isabella Morona, [Prem Qu Nair](http://premqunair.com/), Druck Green, Ian Taylor, Weber Liu, [Thomas Funkhouser](http://www.cs.princeton.edu/~funk/), [Alberto Rodriguez](http://meche.mit.edu/people/faculty/ALBERTOR@MIT.EDU)*
 
@@ -92,7 +92,7 @@ To run our pre-trained model to get pixel-level affordances for grasping with su
 4. Visualize the predictions in Matlab. Shows a heat map of confidence values where hotter regions indicate better locations for grasping with suction. Also displays computed surface normals, which can be used to decide between robot motion primitives suction-down or suction-side. Run the following in Matlab:
 
     ```matlab
-    visualize; # creates results.png and normals.png
+    visualize; % creates results.png and normals.png
     ```
 
 ## Training
@@ -117,6 +117,7 @@ To train your own model:
 3. Download the Torch ResNet-101 model pre-trained on ImageNet:
 
     ```bash
+    cd convnet
     wget http://vision.princeton.edu/projects/2017/arc/downloads/resnet-101.t7
     ```
 
@@ -125,7 +126,6 @@ To train your own model:
 4. Run training (set optional parameters through command line arguments):
 
     ```bash
-    cd convnet
     th train.lua
      ```
 
@@ -161,10 +161,18 @@ To evaluate a trained model:
 
 ## Baseline Algorithm
 
-Our baseline algorithm predicts affordances for suction-based grasping by first computing 3D surface normals of the point cloud (projected from the RGB-D image), then measuring the variance of the surface normals (higher variance = lower affordance). To run our baseline algorithm over the testing split of our grasping dataset, run the following in Matlab:
+Our baseline algorithm predicts affordances for suction-based grasping by first computing 3D surface normals of the point cloud (projected from the RGB-D image), then measuring the variance of the surface normals (higher variance = lower affordance). To run our baseline algorithm over the testing split of our grasping dataset:
+
+1. Navigate to `arc-robot-vision/suction-based-grasping/baseline`
+
+    ```bash
+    cd arc-robot-vision/suction-based-grasping/baseline
+    ```
+
+2. Run the following in Matlab:
 
 ```matlab
-test; # creates results.mat
+test; % creates results.mat
 evaluate;
 ```
 
@@ -216,7 +224,7 @@ To run our pre-trained model to get pixel-level affordances for parallel-jaw gra
 5. Visualize the predictions in Matlab. Shows a heat map of confidence values where hotter regions indicate better locations for horizontal parallel-jaw grasping. Run the following in Matlab:
 
     ```matlab
-    visualize; # creates results.png
+    visualize; % creates results.png
     ```
 
 ## Training
@@ -269,7 +277,7 @@ To train your own model:
     th train.lua
      ```
 
-    Tip: if you run out of GPU memory (CUDA error=2), reduce batch size or modify the network architecture in `model.lua` to use the smaller [ResNet-50](http://vision.princeton.edu/projects/2017/arc/downloads/resnet-50.t7) model pre-trained on ImageNet.
+    Tip: if you run out of GPU memory (CUDA error=2), reduce batch size or modify the network architecture in `model.lua` to use the smaller [ResNet-50 (256.7 MB)](http://vision.princeton.edu/projects/2017/arc/downloads/resnet-50.t7) model pre-trained on ImageNet.
 
 ## Evaluation
 
@@ -295,10 +303,25 @@ To evaluate a trained model:
 
 ## Baseline Algorithm
 
-Our baseline algorithm detects anti-podal parallel-jaw grasps by detecting "hill-like" geometric features (through brute-force sliding window search) from the 3D point cloud of an input heightmap (no color). These geometric features should satisfy two constraints: (1) gripper fingers fit within the concavities along the sides of the hill, and (2) top of the hill should be at least 2cm above the lowest points of the concavities. A valid grasp is ranked by an affordance score, which is computed by the percentage of 3D surface points between the gripper fingers that are above the lowest points of the concavities. To run our baseline algorithm over the testing split of our grasping dataset, run the following in Matlab:
+Our baseline algorithm detects anti-podal parallel-jaw grasps by detecting "hill-like" geometric features (through brute-force sliding window search) from the 3D point cloud of an input heightmap (no color). These geometric features should satisfy two constraints: (1) gripper fingers fit within the concavities along the sides of the hill, and (2) top of the hill should be at least 2cm above the lowest points of the concavities. A valid grasp is ranked by an affordance score, which is computed by the percentage of 3D surface points between the gripper fingers that are above the lowest points of the concavities. To run our baseline algorithm over the testing split of our grasping dataset:
+
+1. Navigate to `arc-robot-vision/parallel-jaw-grasping/baseline`
+
+    ```bash
+    cd arc-robot-vision/parallel-jaw-grasping/baseline
+    ```
+    
+2. Run the following in Matlab:
 
 ```matlab
-test; # creates results.mat
+test; % creates results.mat
+evaluate;
+```
+
+ run the following in Matlab:
+
+```matlab
+test; % creates results.mat
 evaluate;
 ```
 
