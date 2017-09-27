@@ -52,6 +52,14 @@ If you have any questions or find any bugs, please let me know: [Andy Zeng](http
 
 Our implementations have been tested on Ubuntu 16.04.
 
+# Table of Contents
+
+* A Quick Start: Matlab Demo
+* Suction-Based Grasping
+* Parallel-Jaw Grasping
+* Cross-Domain Image Matching
+* Multi-Cam RealSense RGB-D Capture
+
 # Suction-Based Grasping
 
 A Torch implementation of fully convolutional neural networks for predicting pixel-level affordances (here higher values indicate better surface locations for grasping with suction) given an RGB-D image as input.
@@ -290,17 +298,65 @@ test; # creates results.mat
 evaluate;
 ```
 
+# Image Matching
 
+## Training
 
+To train a model:
 
+1. Navigate to `arc-robot-vision/image-matching`
 
+    ```bash
+    cd arc-robot-vision/image-matching
+    ```
 
+2. Download our image matching dataset and save the files into `arc-robot-vision/image-matching/data`. More information about the dataset can be found [here]().
 
+    ```bash
+    wget http://vision.princeton.edu/projects/2017/arc/downloads/image-matching-dataset.zip
+    unzip image-matching-dataset.zip # unzip dataset
+    ```
 
+    Direct download link: [image-matching-dataset.zip ( GB)]()
 
-# Cross-Domain Image Matching
+4. Download the Torch ResNet-50 model pre-trained on ImageNet:
 
+    ```bash
+    wget http://vision.princeton.edu/projects/2017/arc/downloads/resnet-50.t7
+    ```
 
+    Direct download link: [resnet-50.t7 (256.7 MB)]()
 
+5. Run training (change variable `trainMode` in `train.lua` depending on which architecture you want to train):
+
+    ```bash
+    th train.lua
+     ```
 
 ## Evaluation
+
+To evaluate a trained model:
+
+1. Navigate to `arc-robot-vision/image-matching`
+
+    ```bash
+    cd arc-robot-vision/image-matching
+    ```
+
+2. Run the model to compute features for the testing split of our image matching dataset
+
+    ```bash
+    th test.lua # creates HDF5 output file and saves into snapshots folder
+    ```
+
+3. Run the evaluation script in Matlab to compute 1 vs 20 object recognition accuracies over our image matching dataset, as reported in our [paper]()
+
+    ```matlab
+    evaluateTwoStage;
+    ```
+
+    or run the following for evaluation on a single model (instead of a two stage system)
+
+    ```matlab
+    evaluateModel;
+    ```
