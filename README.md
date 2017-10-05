@@ -14,9 +14,9 @@ This repository contains implementations for the major components of robot perce
 <img src="https://github.com/andyzeng/arc-robot-vision/raw/master/images/recognition.jpg" height="230px" width="258px">
 </div>
 
-For more information about our approach, please visit our [project webpage](http://arc.cs.princeton.edu/) and check out our [paper]():
+For more information about our approach, please visit our [project webpage](http://arc.cs.princeton.edu/) and check out our [paper](https://arxiv.org/pdf/1710.01330.pdf):
 
-### Robotic Pick-and-Place of Novel Objects in Clutter with Multi-Affordance Grasping and Cross-Domain Image Matching ( [pdf]() | [arxiv]() | [webpage](http://arc.cs.princeton.edu/) )
+### Robotic Pick-and-Place of Novel Objects in Clutter with Multi-Affordance Grasping and Cross-Domain Image Matching ( [pdf](https://arxiv.org/pdf/1710.01330.pdf) | [arxiv](https://arxiv.org/abs/1710.01330) | [webpage](http://arc.cs.princeton.edu/) )
 
 *[Andy Zeng](http://andyzeng.com), [Shuran Song](http://vision.princeton.edu/people/shurans/), [Kuan-Ting Yu](http://people.csail.mit.edu/peterkty/), [Elliott Donlon](https://www.linkedin.com/in/elliott-donlon-238601a3), [Francois R. Hogan](https://www.linkedin.com/in/francois-hogan-2b4025b6/), [Maria Bauza](http://web.mit.edu/bauza/www/), Daolin Ma, Orion Taylor, [Melody Liu](https://melodygl.wordpress.com/), Eudald Romo, [Nima Fazeli](http://nfazeli.mit.edu/), [Ferran Alet](http://web.mit.edu/alet/www/), [Nikhil Chavan Dafle](https://nikhilcd.mit.edu/), [Rachel Holladay](http://people.csail.mit.edu/rholladay/), Isabella Morona, [Prem Qu Nair](http://premqunair.com/), Druck Green, Ian Taylor, Weber Liu, [Thomas Funkhouser](http://www.cs.princeton.edu/~funk/), [Alberto Rodriguez](http://meche.mit.edu/people/faculty/ALBERTOR@MIT.EDU)*
 
@@ -153,7 +153,7 @@ To evaluate a trained model:
     modelPath=<model.t7> th test.lua # creates evaluation-results.h5
     ```
 
-3. Run the evaluation script in Matlab to compute pixel-level precision against manual annotations from the grasping dataset, as reported in our [paper]():
+3. Run the evaluation script in Matlab to compute pixel-level precision against manual annotations from the grasping dataset, as reported in our [paper](https://arxiv.org/pdf/1710.01330.pdf):
 
     ```matlab
     evaluate;
@@ -295,7 +295,7 @@ To evaluate a trained model:
     modelPath=<model.t7> th test.lua # creates evaluation-results.h5
     ```
 
-3. Run the evaluation script in Matlab to compute pixel-level precision against manual annotations from the grasping dataset, as reported in our [paper]():
+3. Run the evaluation script in Matlab to compute pixel-level precision against manual annotations from the grasping dataset, as reported in our [paper](https://arxiv.org/pdf/1710.01330.pdf):
 
     ```matlab
     evaluate;
@@ -385,7 +385,7 @@ To evaluate a trained model:
     trainMode=2 snapshotsFolder=snapshots-no-class snapshotName=snapshot-8000 th test.lua # for n-net: creates HDF5 output file and saves into snapshots folder
     ```
 
-4. Run the evaluation script in Matlab to compute 1 vs 20 object recognition accuracies over our image matching dataset, as reported in our [paper]():
+4. Run the evaluation script in Matlab to compute 1 vs 20 object recognition accuracies over our image matching dataset, as reported in our [paper](https://arxiv.org/pdf/1710.01330.pdf):
 
     ```matlab
     evaluateTwoStage;
