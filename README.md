@@ -30,7 +30,7 @@ If you find this code useful in your work, please consider citing:
 @article{zeng2017robotic, 
 	title={Robotic Pick-and-Place of Novel Objects in Clutter with Multi-Affordance Grasping and Cross-Domain Image Matching}, 
 	author={Zeng, Andy and Song, Shuran and Yu, Kuan-Ting and Donlon, Elliott and Hogan, Francois Robert and Bauza, Maria and Ma, Daolin and Taylor, Orion and Liu, Melody and Romo, Eudald and Fazeli, Nima and Alet, Ferran and Dafle, Nikhil Chavan and Holladay, Rachel and Morona, Isabella and Nair, Prem Qu and Green, Druck and Taylor, Ian and Liu, Weber and Funkhouser, Thomas and Rodriguez, Alberto}, 
-	booktitle={arXiv preprint arXiv:xxx}, 
+	booktitle={arXiv preprint arXiv:1710.01330}, 
 	year={2017} 
 }
 ```
