@@ -1,6 +1,6 @@
 # Robotic Pick-and-Place of Novel Objects in Clutter
 
-This repository contains implementations for the major components of robot perception as part of MIT-Princeton's 1st Place winning entry (stow task) at the [Amazon Robotics Challenge](https://www.amazonrobotics.com/#/roboticschallenge) 2017. Featuring:
+This repository contains implementations for the major components of robot perception as part of MIT-Princeton's 1st place winning entry for the stow task at the [Amazon Robotics Challenge](https://www.amazonrobotics.com/#/roboticschallenge) 2017. Featuring:
 
 * [Suction-Based Grasping](#suction-based-grasping) - a Torch implementation of fully convolutional neural networks (FCNs) for directly predicting suction-based grasping affordances from RGB-D images.
     * [Baseline Algorithm](#baseline-algorithm) - a Matlab implementation of a baseline algorithm that predicts suction-based grasping affordances by computing the variance of surface normals of a 3D point cloud (projected from RGB-D images), where lower variance = higher affordance.
