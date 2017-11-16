@@ -2,6 +2,7 @@ require 'image'
 require 'cutorch'
 require 'cunn'
 require 'cudnn'
+require 'util'
 
 local threads = require 'threads'
 threads.Threads.serialization('threads.sharedserialize')

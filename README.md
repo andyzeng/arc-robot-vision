@@ -44,6 +44,9 @@ Information and download links for our grasping dataset and image matching datas
 #### Contact
 If you have any questions or find any bugs, please let me know: [Andy Zeng](http://www.cs.princeton.edu/~andyz/) andyz[at]princeton[dot]edu
 
+## Change Log
+* **Nov. 16, 2017.** Fix: added `require 'util'` to `DataLoader.lua`.
+
 # Requirements and Dependencies
 
 * NVIDIA GPU with compute capability 3.5+
