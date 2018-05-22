@@ -2,8 +2,8 @@ require 'cutorch';
 require 'cunn';
 require 'cudnn'
 require 'image'
-require 'utils'
-require 'DataLoader'
+require 'utils.lua'
+require 'DataLoader.lua'
 require 'hdf5'
 
 -- User options (change me)
@@ -90,6 +90,3 @@ resultsFile:write('testFeat', testImgFeats:float())
 resultsFile:close()
 
 print('Finished.')
-
-
-

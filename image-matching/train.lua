@@ -4,17 +4,17 @@ require 'cunn'
 require 'cudnn'
 require 'optim'
 -- require 'DistanceRatioCriterion' (uncomment if DistanceRatioCriterion is not found)
-require 'utils'
-require 'model'
-require 'DataLoader'
+require 'utils.lua'
+require 'model.lua'
+require 'DataLoader.lua'
 
 -- Set RNG seed
 math.randomseed(os.time())
 
--- Set training mode to change deep model (see our paper: 
+-- Set training mode to change deep model (see our paper:
 -- "Robotic Pick-and-Place of Novel Objects in Clutter
 -- with Multi-Affordance Grasping and Cross-Domain Image Matching")
-local trainMode = 1 
+local trainMode = 1
 local snapshotsFolder
 
 -- Two-stream + guided-embedding + multi-product-images + auxiliary classification (K-net)
@@ -88,7 +88,7 @@ for trainIter = 1,10000000 do
 	-- Create a mini-batch of training examples
 	local input,classLabel = dataLoader:getTrainingBatch()
 
-	for i = 1,dataLoader.batchSize do 
+	for i = 1,dataLoader.batchSize do
 		if i == 1 then
 			mosaic = input[1][i]:reshape(3,224,224):cat(input[3][i]:reshape(3,224,224),2)
 		else
@@ -105,11 +105,11 @@ for trainIter = 1,10000000 do
 
 	    -- Update model parameters
 	    if x ~= params then
-	        params:copy(x) 
+	        params:copy(x)
 	    end
 
 	    -- Reset gradients
-	    gradParams:zero() 
+	    gradParams:zero()
 
 		local output
 	    if trainMode == 1 or trainMode == 2 or trainMode == 3 then
@@ -199,8 +199,6 @@ for trainIter = 1,10000000 do
 	if trainIter%1000 == 0 then
 		local filename = paths.concat(snapshotsFolder,'snapshot-'..trainIter..'.t7')
 		os.execute('mkdir -p '..sys.dirname(filename))
-		torch.save(filename, model:clearState()) 
+		torch.save(filename, model:clearState())
 	end
 end
-
-       

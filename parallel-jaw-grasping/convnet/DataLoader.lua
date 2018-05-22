@@ -2,7 +2,7 @@ require 'image'
 require 'cutorch'
 require 'cunn'
 require 'cudnn'
-require 'util'
+require 'util.lua'
 
 local threads = require 'threads'
 threads.Threads.serialization('threads.sharedserialize')
@@ -30,7 +30,7 @@ function DataLoader:__init(options)
     end
 
     -- Shuffle data samples
-    if self.shuffleData then 
+    if self.shuffleData then
         print('Shuffling training data')
         self.shuffleIdx = shuffleTable(self.shuffleIdx,self.numSamples)
     end
@@ -65,7 +65,7 @@ function DataLoader:getMiniBatch()
 
         -- Re-shuffle data if at end of training epoch
         if self.trainIdx == self.trainEpochSize then
-            if self.shuffleData then 
+            if self.shuffleData then
                print('Shuffling training data...')
                self.shuffleIdx = shuffleTable(self.shuffleIdx,self.numSamples)
             end
@@ -101,7 +101,7 @@ function DataLoader:getMiniBatch()
 
         -- Load and pre-process labels
         local labelImg = torch.round(image.load(batchLabelPaths[jobIdx])*2)+1
-        
+
         input[1][jobIdx]:copy(colorImg:reshape(1,3,self.imgHeight,self.imgWidth))
         input[2][jobIdx]:copy(depthImg:reshape(1,3,self.imgHeight,self.imgWidth))
 
