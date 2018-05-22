@@ -6,9 +6,9 @@ require 'nn'
 require 'nnx'
 require 'optim'
 require 'hdf5'
-require 'util'
-require 'DataLoader'
-require 'model'
+require 'util.lua'
+require 'DataLoader.lua'
+require 'model.lua'
 
 -- Default user options
 options = {
