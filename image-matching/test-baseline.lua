@@ -3,8 +3,8 @@ require 'cunn';
 require 'cudnn'
 require 'image'
 
-require 'utils'
-require 'DataLoader'
+require 'utils.lua'
+require 'DataLoader.lua'
 
 require 'hdf5'
 
@@ -69,6 +69,3 @@ resultsFile:write('testFeat', testImgFeats:float())
 resultsFile:close()
 
 print('Finished.')
-
-
-

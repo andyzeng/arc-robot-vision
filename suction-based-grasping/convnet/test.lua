@@ -1,13 +1,13 @@
 require 'cutorch';
 require 'cunn';
-require 'cudnn'
-require 'image'
-require 'nn'
-require 'nnx'
-require 'optim'
-require 'hdf5'
-require 'util'
-require 'model'
+require 'cudnn';
+require 'image';
+require 'nn';
+require 'nnx';
+require 'optim';
+require 'hdf5';
+require 'util.lua'
+require 'model.lua'
 
 -- Default user options
 options = {
@@ -73,7 +73,6 @@ for sampleIdx = 1,#testImgPaths do
 
     -- Compute forward pass
     local output = model:forward(input)
-    
     if sampleIdx == 1 then
         results = output:float()
     else

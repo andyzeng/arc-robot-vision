@@ -6,8 +6,8 @@ require 'nn'
 require 'nnx'
 require 'optim'
 require 'hdf5'
-require 'util'
-require 'model'
+require 'util.lua'
+require 'model.lua'
 
 -- Default user options
 options = {
@@ -47,7 +47,7 @@ local results = torch.Tensor(1,3,options.imgHeight/options.outputScale,options.i
 -- Loop through all test images and compute forward passes for each image
 for sampleIdx = 1,#testImgPaths do
     print('Testing: '..sampleIdx..'/'..#testImgPaths);
-    
+
     -- Load and pre-process color image (24-bit RGB PNG)
     local colorImg = image.load(paths.concat(options.dataPath,'color',testImgPaths[sampleIdx]..'.png'))
     for c=1,3 do
@@ -73,7 +73,7 @@ for sampleIdx = 1,#testImgPaths do
 
     -- Compute forward pass
     local output = model:forward(input)
-    
+
     if sampleIdx == 1 then
         results = output:float()
     else

@@ -5,9 +5,9 @@ require 'nnx'
 require 'cunn'
 require 'cudnn'
 require 'optim'
-require 'model'
-require 'util'
-require 'DataLoader'
+require 'model.lua'
+require 'util.lua'
+require 'DataLoader.lua'
 
 -- Default user options
 options = {
@@ -61,17 +61,17 @@ for trainIter = 1,1000000 do -- set maximum number of iterations to an arbitrari
   local rgbdImgs,labelImgs = dataLoader:getMiniBatch()
   input[1]:copy(rgbdImgs[1])
   input[2]:copy(rgbdImgs[2])
-  label:copy(labelImgs)   
+  label:copy(labelImgs)
 
   local feval = function(x)
 
     -- Update model parameters
     if x ~= params then
-      params:copy(x) 
+      params:copy(x)
     end
 
     -- Reset gradients
-    gradParams:zero() 
+    gradParams:zero()
 
     -- Compute forward pass
     local output = model:forward(input)
@@ -96,6 +96,6 @@ for trainIter = 1,1000000 do -- set maximum number of iterations to an arbitrari
   if trainIter%1000 == 1 then
     local filename = paths.concat(options.snapshotsFolder, "snapshot-"..trainIter..".t7")
     os.execute('mkdir -p '..sys.dirname(filename))
-    torch.save(filename, model:clearState()) 
+    torch.save(filename, model:clearState())
   end
 end
