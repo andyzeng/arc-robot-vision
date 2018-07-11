@@ -18,7 +18,6 @@ trainSplitFid = fopen(fullfile(targetDir,'train-processed-split.txt'),'w');
 testSplitFid = fopen(fullfile(targetDir,'test-processed-split.txt'),'w');
 
 for sampleIdx = 1:length(labelFiles)
-    fprintf('%d/%d\n',sampleIdx,length(labelFiles))
     sampleName = sprintf('%06d.png',sampleIdx-1);
 
     % Load color and depth heightmaps and zero-pad into 320x320 patch
@@ -42,13 +41,13 @@ for sampleIdx = 1:length(labelFiles)
     goodGraspPixLabels(:,2:2:end) = goodGraspPixLabels(:,2:2:end)+48;
     badGraspPixLabels(:,2:2:end) = badGraspPixLabels(:,2:2:end)+48;
     
-%     figure(1); imshow(heightmapColor);
+    figure(1); imshow(heightmapColor);
     
     % Generate heat map labels for good grasp annotations
     goodGraspLabels = uint8(zeros(40,40,16));
     for graspIdx = 1:size(goodGraspPixLabels,1)
-%         hold on; plot([goodGraspPixLabels(graspIdx,1);goodGraspPixLabels(graspIdx,3)], ...
-%                       [goodGraspPixLabels(graspIdx,2);goodGraspPixLabels(graspIdx,4)]); hold off;
+        hold on; plot([goodGraspPixLabels(graspIdx,1);goodGraspPixLabels(graspIdx,3)], ...
+                      [goodGraspPixLabels(graspIdx,2);goodGraspPixLabels(graspIdx,4)]); hold off;
         graspSampleCenter = mean([goodGraspPixLabels(graspIdx,1:2);goodGraspPixLabels(graspIdx,3:4)]); % Compute grasping location
         graspSampleCenterDownsample = round((graspSampleCenter-1)./8+1); % Downsample grasping location
         
@@ -123,8 +122,8 @@ for sampleIdx = 1:length(labelFiles)
         end
         
         % Visualize grasp labels for training
-%         figure(2); subplot(4,4,rotIdx); imshow(sampleHeightmapColor);
-%         figure(3); subplot(4,4,rotIdx); imshow(sampleHeightmapLabel);
+        figure(2); subplot(4,4,rotIdx); imshow(sampleHeightmapColor);
+        figure(3); subplot(4,4,rotIdx); imshow(sampleHeightmapLabel);
     end
     pause(0.1);
 end
